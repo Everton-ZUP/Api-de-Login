@@ -1,6 +1,7 @@
 package br.zup.seguranca.Login.controller.Dto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.zup.seguranca.Login.modelo.Usuario;
@@ -12,6 +13,10 @@ public class UsuarioDTO {
 	
 	public UsuarioDTO(Usuario usr) {
 		this.email = usr.getEmail();
+	}
+
+	public UsuarioDTO(Optional<Usuario> opt) {
+		this.email = opt.get().getEmail();
 	}
 
 	public String getEmail() {
