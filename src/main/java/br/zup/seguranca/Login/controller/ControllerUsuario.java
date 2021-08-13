@@ -3,11 +3,16 @@ package br.zup.seguranca.Login.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,19 +46,23 @@ public class ControllerUsuario {
 	}
 	
 	@GetMapping
-	public List<UsuarioDTO> listarTodos (String email) {
+	public Page<UsuarioDTO> listarTodos (String email, @PageableDefault(sort = "ID", direction = Direction.DESC) Pageable paginacao) {
 		if (email == null) {
-			List<Usuario> users = repositoryUsuario.findAll();
+			Page<Usuario> users = repositoryUsuario.findAll(paginacao);
 			return UsuarioDTO.converter(users);	
 		}else {
-			List<Usuario> users = repositoryUsuario.findByEmail(email);
+			Page<Usuario> users = repositoryUsuario.findByEmail(email,paginacao);
 			return UsuarioDTO.converter(users);	
 		}
 	}
 	
 	@GetMapping("/{id}")
-	public UsuarioDTO detalhar(@PathVariable Long id) {
-		return new UsuarioDTO(repositoryUsuario.findById(id));
+	public ResponseEntity<UsuarioDTO> detalhar(@PathVariable Long id) {
+		Optional<Usuario> usr = repositoryUsuario.findById(id);
+		if (usr.isPresent()) {
+			return ResponseEntity.ok(new UsuarioDTO(usr.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PutMapping("/{id}")

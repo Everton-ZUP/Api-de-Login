@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
 import br.zup.seguranca.Login.modelo.Usuario;
 
 public class UsuarioDTO {
@@ -15,10 +17,6 @@ public class UsuarioDTO {
 		this.email = usr.getEmail();
 	}
 
-	public UsuarioDTO(Optional<Usuario> opt) {
-		this.email = opt.get().getEmail();
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -27,7 +25,8 @@ public class UsuarioDTO {
 		this.email = email;
 	}
 
-	public static List<UsuarioDTO> converter(List<Usuario> users) {
-		return users.stream().map(UsuarioDTO::new).collect(Collectors.toList());
+	public static Page<UsuarioDTO> converter(Page<Usuario> users) {
+		return users.map(UsuarioDTO::new);
+	/*	return users.stream().map(UsuarioDTO::new).collect(Collectors.toList()); */
 	}
 }

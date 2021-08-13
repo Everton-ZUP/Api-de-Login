@@ -1,5 +1,26 @@
 package br.zup.seguranca.Login.controller.form;
 
-public class UsuarioForm {
 
+public class UsuarioForm {
+	
+	
+	private String email;
+	private String senha;
+	
+	
+	
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
 }
