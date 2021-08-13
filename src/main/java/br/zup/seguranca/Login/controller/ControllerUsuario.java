@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.zup.seguranca.Login.controller.Dto.UsuarioDTO;
 import br.zup.seguranca.Login.modelo.Usuario;
 
 @RestController()
@@ -14,8 +15,8 @@ import br.zup.seguranca.Login.modelo.Usuario;
 public class ControllerUsuario {
 
 	@PostMapping
-	public Usuario adicionar(@RequestBody Usuario usr) {
-		return usr;
+	public UsuarioDTO adicionar(@RequestBody Usuario usr) {
+		return new UsuarioDTO(usr);
 	}
 	
 	@GetMapping
