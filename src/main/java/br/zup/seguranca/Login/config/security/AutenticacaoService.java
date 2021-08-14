@@ -15,11 +15,12 @@ import br.zup.seguranca.Login.repository.RepositoryUsuario;
 public class AutenticacaoService implements UserDetailsService {
 
 	@Autowired
-	RepositoryUsuario repository;
+	private RepositoryUsuario repository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Usuario> usuario = repository.findByEmail(username);
+		System.out.println(usuario.get());
 		if (usuario.isPresent()) {
 			return usuario.get();
 		}

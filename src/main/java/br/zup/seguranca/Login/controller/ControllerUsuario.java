@@ -46,14 +46,9 @@ public class ControllerUsuario {
 	}
 	
 	@GetMapping
-	public Page<UsuarioDTO> listarTodos (String email, @PageableDefault(sort = "ID", direction = Direction.DESC) Pageable paginacao) {
-		if (email == null) {
-			Page<Usuario> users = repositoryUsuario.findAll(paginacao);
-			return UsuarioDTO.converter(users);	
-		}else {
-			Page<Usuario> users = repositoryUsuario.findByEmail(email,paginacao);
-			return UsuarioDTO.converter(users);	
-		}
+	public Page<UsuarioDTO> listarTodos (@PageableDefault(sort = "ID", direction = Direction.DESC) Pageable paginacao) {
+		Page<Usuario> users = repositoryUsuario.findAll(paginacao);
+		return UsuarioDTO.converter(users);	
 	}
 	
 	@GetMapping("/{id}")
