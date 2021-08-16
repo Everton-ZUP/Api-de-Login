@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.zup.seguranca.Login.modelo.Usuario;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -18,10 +19,10 @@ public class TokenService {
 	
 	@Value("${login.jwt.secret}")
 	private String secret;
+
 	
 	
 	public String gerarToken(Authentication aut) {
-		System.out.println("Iniciou Geração de Token!");
 		Usuario logado = (Usuario) aut.getPrincipal();
 		Date hoje = new Date();
 		
@@ -34,6 +35,22 @@ public class TokenService {
 				.setExpiration(dataExp)
 				.signWith(SignatureAlgorithm.HS256, secret)
 				.compact();
+	}
+
+
+	public boolean isTokenValido(String token) {
+		try {
+			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+			return true;
+		} catch (Exception e) {
+			return false;			
+		}
+	}
+
+
+	public Long getIdUsuario(String token) {
+		Claims body = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+		return Long.parseLong(body.getSubject());
 	}
 
 }

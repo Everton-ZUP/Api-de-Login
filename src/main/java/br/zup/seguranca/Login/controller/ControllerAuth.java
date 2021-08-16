@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.zup.seguranca.Login.config.security.TokenService;
+import br.zup.seguranca.Login.controller.Dto.TokenDto;
 import br.zup.seguranca.Login.controller.form.LoginForm;
 
 @RestController
@@ -27,16 +28,13 @@ public class ControllerAuth {
 	private TokenService tokenService;
 
 	@PostMapping
-	public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm form) {
+	public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form) {
 		UsernamePasswordAuthenticationToken dadosLogin = form.converter();
 		
-			System.out.println("Entrou no try");
-			Authentication aut = authManager.authenticate(dadosLogin);
-			System.out.println("ad"+aut.getPrincipal());
-			String token = tokenService.gerarToken(aut);
-			System.out.println(token);
 		try {
-			return ResponseEntity.ok().build();	
+			Authentication aut = authManager.authenticate(dadosLogin);
+			String token = tokenService.gerarToken(aut);
+			return ResponseEntity.ok(new TokenDto(token, "Bearer"));	
 		} catch (AuthenticationException e) {
 			return ResponseEntity.badRequest().build();
 		}
