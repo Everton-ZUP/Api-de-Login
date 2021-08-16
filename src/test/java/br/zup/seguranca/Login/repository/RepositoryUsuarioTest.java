@@ -33,7 +33,6 @@ class RepositoryUsuarioTest {
 		Usuario us = new Usuario();
 		us.setEmail("Everton@zup.com.br");
 		em.persist(us);
-		
 		String email = "Everton@zup.com.br";
 		Usuario user = ru.findByEmail(email).get();
 		assertNotNull(user);

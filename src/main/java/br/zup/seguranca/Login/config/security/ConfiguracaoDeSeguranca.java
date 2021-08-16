@@ -19,7 +19,7 @@ import br.zup.seguranca.Login.repository.RepositoryUsuario;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
+@Profile(value = {"prod","test"})
 public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter{
 	
 	@Autowired

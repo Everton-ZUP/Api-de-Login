@@ -20,7 +20,7 @@ import br.zup.seguranca.Login.controller.form.LoginForm;
 
 @RestController
 @RequestMapping("/auth")
-@Profile("prod")
+@Profile(value = {"prod","test"})
 public class ControllerAuth {
 
 	@Autowired
