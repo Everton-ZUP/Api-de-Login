@@ -17,47 +17,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import br.zup.seguranca.Login.repository.RepositoryUsuario;
 
+
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
-public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter{
-	
-	@Autowired
-	private AutenticacaoService autenticacaoService;
-	
-	@Autowired
-	private TokenService tokenService;
-	
-	@Autowired
-	private RepositoryUsuario repo;
-	
-	@Override
-	@Bean
-	protected AuthenticationManager authenticationManager() throws Exception {
-		return super.authenticationManager();
-	}
-	
-	//Configurações de autenticação (Onde indica como vai fazer a autenticação)
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
-	}
+@Profile("dev")
+public class DevConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter{
 
 	//Configuração de Autorização
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET, "/usuario").permitAll()
-			.antMatchers(HttpMethod.GET, "/usuario/*").permitAll()
-			.antMatchers(HttpMethod.POST,"/usuario").permitAll()
-			.antMatchers(HttpMethod.DELETE,"/usuario/*").hasRole("MODERADOR")
-			.antMatchers("/auth").permitAll()
-			.anyRequest().authenticated()
-			.and().csrf().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService,repo), UsernamePasswordAuthenticationFilter.class);
-			
-		/*antMatchers("/usuario/**").permitAll() */
+			.antMatchers("/**").permitAll()
+			.and().csrf().disable();
 	}
 	
 
